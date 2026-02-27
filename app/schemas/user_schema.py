@@ -1,8 +1,10 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, ConfigDict, EmailStr
 
 class UserBase(BaseModel):
     name: str
     email: EmailStr
+
+    model_config = ConfigDict(extra="forbid")
 
 class UserCreate(UserBase):
     pass
@@ -10,5 +12,4 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

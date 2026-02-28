@@ -29,6 +29,15 @@ def test_user_validation_missing_field(client):
 
     assert response.status_code == 422
 
+    body = response.json()
+    assert "detail" in body
+    errors = body["detail"]
+    password_errors = [
+        e for e in errors
+        if e.get("loc") == ["body", "password"] and "Field required" in e.get("msg", "")
+    ]
+    assert len(password_errors) > 0
+
 def test_user_validation_extra_field(client):
     response = client.post(
         "/api/users",
@@ -41,6 +50,15 @@ def test_user_validation_extra_field(client):
 
     assert response.status_code == 422
 
+    body = response.json()
+    assert "detail" in body
+    errors = body["detail"]
+    age_errors = [
+        e for e in errors
+        if e.get("loc") == ["body", "age"] and "Extra inputs are not permitted" in e.get("msg", "")
+    ]
+    assert len(age_errors) > 0
+
 
 def test_user_invalid_characters(client):
     response = client.post(
@@ -52,3 +70,12 @@ def test_user_invalid_characters(client):
     )
 
     assert response.status_code == 422
+
+    body = response.json()
+    assert "detail" in body
+    errors = body["detail"]
+    descripcion_errors = [
+        e for e in errors
+        if e.get("loc") == ["body", "username"] and "Caracteres no permitidos" in e.get("msg", "")
+    ]
+    assert len(descripcion_errors) > 0

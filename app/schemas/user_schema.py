@@ -1,6 +1,10 @@
 from pydantic import BaseModel, ConfigDict, EmailStr, field_validator
 import re
 
+USERNAME_REGEX = re.compile(
+    r"^(?=.{3,30}$)(?![._-])(?!.*[._-]{2})[a-zA-Z0-9._-]+(?<![._-])$"
+)
+
 class UserBase(BaseModel):
     username: str
     
@@ -8,8 +12,8 @@ class UserBase(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     @field_validator("username")
-    def no_html_tags(cls, v: str) -> str:
-        if re.search(r"[<>]", v):
+    def validate_username(cls, v: str) -> str:
+        if not USERNAME_REGEX.fullmatch(v):
             raise ValueError("Caracteres no permitidos")
         return v
 

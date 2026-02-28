@@ -1,6 +1,7 @@
 from pydantic import BaseModel, ConfigDict, field_validator
 import re
 from datetime import date
+from uuid import UUID
 
 class MovimientoBase(BaseModel):
     descripcion: str
@@ -29,14 +30,14 @@ class MovimientoCreateRequest(MovimientoBase):
     pass
 
 class MovimientoCreate(MovimientoBase):
-    usuario_id: int
+    usuario_id: UUID
 
 class MovimientoCreateResponse(MovimientoBase):
     id: int
-    usuario_id: int
+    usuario_id: UUID
 
 class Movimiento(MovimientoBase):
     id: int
-    usuario_id: int
+    usuario_id: UUID
 
     model_config = ConfigDict(from_attributes=True)

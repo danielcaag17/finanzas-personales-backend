@@ -39,7 +39,7 @@ def test_create_movimiento_success(client, db, test_user, auth_headers):
     assert movimiento_data["monto"] == 150.0
     assert movimiento_data["tipo_movimiento"] == "gasto fijo"
     assert movimiento_data["categoria"] == "Supermercado"
-    assert movimiento_data["usuario_id"] == test_user.id
+    assert movimiento_data["usuario_id"] == str(test_user.id)
     assert movimiento_data["cuenta_origen"] == "Tarjeta de crédito"
     assert movimiento_data["fecha"] == "2024-06-01"
 

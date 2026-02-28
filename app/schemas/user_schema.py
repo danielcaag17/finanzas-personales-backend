@@ -1,5 +1,6 @@
 from pydantic import BaseModel, ConfigDict, EmailStr, field_validator
 import re
+from uuid import UUID
 
 USERNAME_REGEX = re.compile(
     r"^(?=.{3,30}$)(?![._-])(?!.*[._-]{2})[a-zA-Z0-9._-]+(?<![._-])$"
@@ -21,14 +22,14 @@ class UserCreateRequest(UserBase):
     password: str
 
 class UserCreateResponse(UserBase):
-    id: int
+    id: UUID
 
 
 class UserCreate(UserBase):
     pass
 
 class User(UserBase):
-    id: int
+    id: UUID
     password: str
     email: EmailStr
 

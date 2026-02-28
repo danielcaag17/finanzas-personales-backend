@@ -1,6 +1,5 @@
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import UUID, Column, ForeignKey, Integer, String
 from app.database import Base
-from app.models.user import User
 
 class Movimiento(Base):
     __tablename__ = "movimientos"
@@ -10,6 +9,6 @@ class Movimiento(Base):
     monto = Column(Integer, index=True)
     tipo_movimiento = Column(String, index=True)
     categoria = Column(String, index=True)
-    usuario_id = Column(Integer, ForeignKey("users.id"), index=True)
+    usuario_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), index=True)
     cuenta_origen = Column(String, index=True)
     fecha = Column(String, index=True)

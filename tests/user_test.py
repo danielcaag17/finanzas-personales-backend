@@ -79,3 +79,26 @@ def test_user_invalid_characters(client):
         if e.get("loc") == ["body", "username"] and "Caracteres no permitidos" in e.get("msg", "")
     ]
     assert len(descripcion_errors) > 0
+
+def test_user_duplicate_username(client, db):
+    # Crear un usuario con el mismo username
+    response = client.post(
+        "/api/users",
+        json={
+            "username": "Juan",
+            "password": "password123"
+        }
+    )
+    assert response.status_code == 201
+
+    # Intentar crear otro usuario con el mismo username
+    response = client.post(
+        "/api/users",
+        json={
+            "username": "Juan",
+            "password": "password456"
+        }
+    )
+    assert response.status_code == 400
+    body = response.json()
+    assert body["detail"] == "Username already exists"

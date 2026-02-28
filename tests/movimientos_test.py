@@ -1,3 +1,4 @@
+import uuid
 from app.models import Movimiento
 import pytest
 from app.models import User
@@ -148,3 +149,19 @@ def test_movimiento_invalid_tipo_movimiento(client, test_user, auth_headers):
     ]
     assert len(tipo_errors) > 0
     
+def test_movimiento_usuario_id_mismatch(client, test_user, auth_headers):
+    # Intentar crear un movimiento para otro usuario (ID diferente al del token)
+    response = client.post(
+        f"/api/users/{str(uuid.uuid4())}/movimientos",  # ID aleatorio diferente al test_user.id
+        json={
+            "descripcion": "Compra de productos",
+            "monto": 150.0,
+            "tipo_movimiento": "gasto fijo",
+            "categoria": "Supermercado",
+            "cuenta_origen": "Tarjeta de crédito",
+            "fecha": "2024-06-01"
+        },
+        headers=auth_headers
+    )
+
+    assert response.status_code == 403  # Forbidden

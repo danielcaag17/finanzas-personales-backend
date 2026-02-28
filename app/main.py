@@ -3,7 +3,6 @@ from fastapi.concurrency import asynccontextmanager
 from app.router import router as api_router
 from app.config.settings import settings
 from app.config.cors import setup_cors
-from app import models
 from app.config.logging_config import setup_logging
 import logging
 from app.database import engine, Base

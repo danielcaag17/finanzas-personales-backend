@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.repositories.movimiento_repository import create_movimiento_db
@@ -9,7 +9,7 @@ router = APIRouter(
     dependencies=[Depends(get_current_user)]
 )
 
-@router.post("", response_model=MovimientoCreateResponse)
+@router.post("", response_model=MovimientoCreateResponse, status_code=status.HTTP_201_CREATED)
 def create_movimiento(data: MovimientoCreateRequest, user_id: CurrentUser, db: Session = Depends(get_db)):
     movimiento_data = MovimientoCreate(**data.model_dump(), usuario_id=user_id)
     return create_movimiento_db(db, movimiento_data)

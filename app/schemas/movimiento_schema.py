@@ -33,6 +33,7 @@ class MovimientoCreate(MovimientoBase):
 
 class MovimientoCreateResponse(MovimientoBase):
     id: int
+    usuario_id: int
 
 class Movimiento(MovimientoBase):
     id: int
